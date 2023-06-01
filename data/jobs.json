@@ -1,0 +1,42 @@
+[
+    {
+        "title": "Executive Assistant",
+        "description": " We are looking for an exceptionally bright, well organized and self-motivated Executive Assistant to become part of our Worldwide Public Sector Team here at Amazon Web Services",
+        "location": "Seattle, WA",
+        "salary": "85000",
+        "category": "Administrative",
+        "company": "Amazon"
+    },
+    {
+        "title": "Sales Assitant",
+        "description": " We are looking for an exceptionally bright, well organized and self-motivated Sales Assistant to become part of our Worldwide Public Sector Team here at Amazon Web Services",
+        "location": "Los Angeles, CA",
+        "salary": "55000",
+        "category": "Stores",
+        "company": "Target"
+    },
+    {
+        "title": "Software Engineer",
+        "description": " We are looking for an exceptionally bright, well organized and self-motivated Software Engineer to become part of our Worldwide Public Sector Team here at Amazon Web Services",
+        "location": "Palo Alto, CA",
+        "salary": "138000",
+        "category": "IT",
+        "company": "Microsoft"
+    },
+    {
+        "title": "Crew Memeber",
+        "description": " We are looking for an exceptionally bright, well organized and self-motivated Crew Member to become part of our Worldwide Public Sector Team here at Amazon Web Services",
+        "location": "Chicago, IL",
+        "salary": "24000",
+        "category": "Restaurant",
+        "company": "McDonalds"
+    },
+    {
+        "title": "Loan Officer",
+        "description": " We are looking for an exceptionally bright, well organized and self-motivated Loan Officer to become part of our Worldwide Public Sector Team here at Amazon Web Services",
+        "location": "Boston, MA",
+        "salary": "72000",
+        "category": "Banking",
+        "company": "Bank of America"
+    }
+]
