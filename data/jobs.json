@@ -1,42 +1,82 @@
 [
     {
-        "title": "Executive Assistant",
-        "description": " We are looking for an exceptionally bright, well organized and self-motivated Executive Assistant to become part of our Worldwide Public Sector Team here at Amazon Web Services",
-        "location": "Seattle, WA",
-        "salary": "85000",
-        "category": "Administrative",
-        "company": "Amazon"
+        "title": "Software Engineer",
+        "description": "Develop and maintain software applications.",
+        "location": "Seattle, Washington",
+        "salary": 80000,
+        "category": "Technology",
+        "company": "6479ca7b99b413908600450a"
     },
     {
-        "title": "Sales Assitant",
-        "description": " We are looking for an exceptionally bright, well organized and self-motivated Sales Assistant to become part of our Worldwide Public Sector Team here at Amazon Web Services",
-        "location": "Los Angeles, CA",
-        "salary": "55000",
-        "category": "Stores",
-        "company": "Target"
+        "title": "Product Manager",
+        "description": "Define and execute product strategy.",
+        "location": "Seattle, Washington",
+        "salary": 90000,
+        "category": "Business",
+        "company": "6479ca7b99b413908600450a"
+    },
+    {
+        "title": "Store Manager",
+        "description": "Manage daily store operations.",
+        "location": "Minneapolis, Minnesota",
+        "salary": 60000,
+        "category": "Retail",
+        "company": "6479ca7b99b413908600450b"
+    },
+    {
+        "title": "Sales Associate",
+        "description": "Assist customers and provide product recommendations.",
+        "location": "Minneapolis, Minnesota",
+        "salary": 40000,
+        "category": "Retail",
+        "company": "6479ca7b99b413908600450b"
     },
     {
         "title": "Software Engineer",
-        "description": " We are looking for an exceptionally bright, well organized and self-motivated Software Engineer to become part of our Worldwide Public Sector Team here at Amazon Web Services",
-        "location": "Palo Alto, CA",
-        "salary": "138000",
-        "category": "IT",
-        "company": "Microsoft"
+        "description": "Design and develop software solutions.",
+        "location": "Redmond, Washington",
+        "salary": 90000,
+        "category": "Technology",
+        "company": "6479ca7b99b413908600450c"
     },
     {
-        "title": "Crew Memeber",
-        "description": " We are looking for an exceptionally bright, well organized and self-motivated Crew Member to become part of our Worldwide Public Sector Team here at Amazon Web Services",
-        "location": "Chicago, IL",
-        "salary": "24000",
-        "category": "Restaurant",
-        "company": "McDonalds"
+        "title": "Data Analyst",
+        "description": "Analyze and interpret data for business insights.",
+        "location": "Redmond, Washington",
+        "salary": 70000,
+        "category": "Analytics",
+        "company": "6479ca7b99b413908600450c"
     },
     {
-        "title": "Loan Officer",
-        "description": " We are looking for an exceptionally bright, well organized and self-motivated Loan Officer to become part of our Worldwide Public Sector Team here at Amazon Web Services",
-        "location": "Boston, MA",
-        "salary": "72000",
-        "category": "Banking",
-        "company": "Bank of America"
+        "title": "Financial Analyst",
+        "description": "Perform financial analysis and reporting.",
+        "location": "Charlotte, North Carolina",
+        "salary": 75000,
+        "category": "Finance",
+        "company": "6479ca7b99b413908600450d"
+    },
+    {
+        "title": "Customer Service Representative",
+        "description": "Assist customers with banking transactions and inquiries.",
+        "location": "Charlotte, North Carolina",
+        "salary": 45000,
+        "category": "Customer Service",
+        "company": "6479ca7b99b413908600450d"
+    },
+    {
+        "title": "Restaurant Manager",
+        "description": "Oversee restaurant operations and staff.",
+        "location": "Chicago, Illinois",
+        "salary": 60000,
+        "category": "Hospitality",
+        "company": "6479ca7b99b413908600450e"
+    },
+    {
+        "title": "Kitchen Staff",
+        "description": "Prepare and cook food in a fast-paced environment.",
+        "location": "Chicago, Illinois",
+        "salary": 35000,
+        "category": "Hospitality",
+        "company": "6479ca7b99b413908600450e"
     }
 ]

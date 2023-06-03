@@ -2,8 +2,11 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 const jobRouter = require("./routes/jobRoutes");
+const companyRouter = require("./routes/companyRoutes");
 
 app.use("/api/v1/jobs", jobRouter);
+app.use("/api/v1/companies", companyRouter);
+
 //HANDLE UNHANDLED ROUTES
 app.all("*", (req, res, next) => {
   const err = new Error(`Cannot find ${req.originalUrl} on this server!`);

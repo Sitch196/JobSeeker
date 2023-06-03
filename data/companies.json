@@ -1,0 +1,37 @@
+[
+    {
+        "name": "Amazon",
+        "founded": 1994,
+        "size": 100000,
+        "location": "Seattle, Washington",
+        "description": "Amazon is an American multinational technology company."
+    },
+    {
+        "name": "Target",
+        "founded": 1902,
+        "size": 500000,
+        "location": "Minneapolis, Minnesota",
+        "description": "Target is an American retail corporation."
+    },
+    {
+        "name": "Microsoft",
+        "founded": 1975,
+        "size": 150000,
+        "location": "Redmond, Washington",
+        "description": "Microsoft is an American multinational technology company."
+    },
+    {
+        "name": "Bank of America",
+        "founded": 1904,
+        "size": 200000,
+        "location": "Charlotte, North Carolina",
+        "description": "Bank of America is an American multinational investment bank and financial services company."
+    },
+    {
+        "name": "McDonald's",
+        "founded": 1955,
+        "size": 210000,
+        "location": "Chicago, Illinois",
+        "description": "McDonald's is an American fast food company."
+    }
+]

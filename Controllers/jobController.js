@@ -1,9 +1,8 @@
-const { errorMonitor } = require("stream");
 const Job = require("../models/jobModel");
 
 exports.getAllJobs = async (req, res) => {
   try {
-    const jobs = await Job.find();
+    const jobs = await Job.find().select("-__v");
     res.status(200).json({
       status: "success",
       results: jobs.length,
