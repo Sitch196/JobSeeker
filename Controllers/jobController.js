@@ -1,4 +1,5 @@
 const Job = require("../models/jobModel");
+const Company = require("../models/companyModel");
 
 exports.getAllJobs = async (req, res) => {
   try {
@@ -19,7 +20,13 @@ exports.getAllJobs = async (req, res) => {
 };
 exports.createJob = async (req, res) => {
   try {
-    const newJob = await Job.create(req.body);
+    const companyId = req.user._id;
+
+    const jobData = {
+      ...req.body,
+      company: companyId,
+    };
+    const newJob = await Job.create(jobData);
     res.status(201).json({
       status: "success",
       data: {
@@ -35,7 +42,12 @@ exports.createJob = async (req, res) => {
 };
 exports.getJob = async (req, res) => {
   try {
-    const job = await Job.findById(req.params.id);
+    const job = await Job.findById(req.params.id)
+      .populate({
+        path: "company",
+        select: "name size founded location",
+      })
+      .select("-__v -id");
     res.status(200).json({
       status: "success",
       data: {

@@ -54,6 +54,12 @@ const companySchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+companySchema.virtual("jobs", {
+  ref: "Job",
+  foreignField: "company",
+  localField: "_id",
+});
 companySchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 

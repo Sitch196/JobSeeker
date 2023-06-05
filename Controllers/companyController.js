@@ -17,6 +17,23 @@ exports.getAllCompanies = async (req, res) => {
     });
   }
 };
+exports.getCompany = async (req, res) => {
+  try {
+    const company = await Company.findById(req.params.id).populate("jobs");
+    res.status(200).json({
+      status: "Success",
+      results: company.length,
+      data: {
+        company,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "failed",
+      message: err,
+    });
+  }
+};
 // exports.createCompany = async (req, res) => {
 //   try {
 //     const newCompany = await Company.create(req.body);

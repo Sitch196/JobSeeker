@@ -8,5 +8,5 @@ router.post("/login", authController.login);
 
 router.route("/").get(companyController.getAllCompanies);
 // .post(companyController.createCompany);
-
+router.route("/:id").get(companyController.getCompany);
 module.exports = router;

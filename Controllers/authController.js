@@ -47,7 +47,7 @@ exports.login = async (req, res) => {
   }
 
   try {
-    const user = await Company.findOne({ email }).select("-__v");
+    const user = await Company.findOne({ email });
 
     if (!user) {
       return res.status(401).json({

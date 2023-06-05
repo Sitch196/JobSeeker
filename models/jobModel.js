@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const jobSchema = new mongoose.Schema(
   {
     title: {
@@ -23,7 +24,7 @@ const jobSchema = new mongoose.Schema(
     company: {
       type: mongoose.Schema.ObjectId,
       ref: "Company",
-      required: [true, "A job must belong to a company"],
+      // required: [true, "A job must belong to a company"],
     },
   },
   {
