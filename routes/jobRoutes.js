@@ -10,7 +10,7 @@ router
 router
   .route("/:id")
   .get(jobController.getJob)
-  .patch(jobController.updateJob)
-  .delete(jobController.deleteJob);
+  .patch(authController.protect, jobController.updateJob)
+  .delete(authController.protect, jobController.deleteJob);
 
 module.exports = router;

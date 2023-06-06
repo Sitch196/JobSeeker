@@ -112,3 +112,15 @@ exports.protect = async (req, res, next) => {
   //check if user changed password after the token was issued
   next();
 };
+exports.permissionTo = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({
+        status: "failed",
+        message: "You do not have permission to perform this action",
+      });
+    }
+
+    next();
+  };
+};

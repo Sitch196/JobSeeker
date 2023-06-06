@@ -34,19 +34,49 @@ exports.getCompany = async (req, res) => {
     });
   }
 };
-// exports.createCompany = async (req, res) => {
-//   try {
-//     const newCompany = await Company.create(req.body);
-//     res.status(201).json({
-//       status: "success",
-//       data: {
-//         company: newCompany,
-//       },
-//     });
-//   } catch (err) {
-//     res.status(400).json({
-//       status: "failed",
-//       message: "Invalid data sent!",
-//     });
-//   }
-// };
+
+exports.deleteCompany = async (req, res) => {
+  try {
+    const company = await Company.findByIdAndDelete(req.params.id);
+    if (!company) {
+      res.status(404).json({
+        message: "Invalid ID",
+      });
+    }
+    res.status(204).json({
+      status: "Success",
+      message: "Comany Deleted Successfully",
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err,
+    });
+  }
+};
+
+exports.updateCompany = async (req, res) => {
+  try {
+    const company = await Company.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!company) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Invalid ID",
+      });
+    }
+    res.status(200).json({
+      status: "success",
+      data: {
+        company,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err,
+    });
+  }
+};

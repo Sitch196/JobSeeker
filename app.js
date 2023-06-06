@@ -1,9 +1,10 @@
 const express = require("express");
 const app = express();
 app.use(express.json());
+const cors = require("cors");
 const jobRouter = require("./routes/jobRoutes");
 const companyRouter = require("./routes/companyRoutes");
-
+app.use(cors());
 app.use("/api/v1/jobs", jobRouter);
 app.use("/api/v1/companies", companyRouter);
 
