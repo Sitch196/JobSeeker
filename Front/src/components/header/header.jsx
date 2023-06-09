@@ -81,7 +81,6 @@ const Header = () => {
           </ul>
         </BurgerMenu>
       )}
-      {/* {showMenu && <Overlay onClick={closeMenu} />} */}
     </HeaderWrapper>
   );
 };
@@ -92,7 +91,7 @@ const Img = styled.img`
 `;
 const LoginBtn = styled(Link)`
   border: 2px solid lightgray;
-  padding: 0.6rem 1.3rem;
+  padding: 1rem 1.8rem;
   color: whitesmoke;
   background-color: rgba(245, 245, 245, 0.2);
   /* text-transform: uppercase; */
@@ -116,12 +115,10 @@ const LogoNav = styled.div`
 `;
 const HeaderWrapper = styled.div`
   background: linear-gradient(to bottom, #4c35de, #4c35de);
-  /* border-radius: 5px; */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(140, 141, 151, 0.28);
-  padding: 1rem;
+  /* border: 1px solid rgba(140, 141, 151, 0.28); */
+  padding: 1.5rem;
   position: relative;
   /* border: 1px solid red; */
 `;
@@ -144,8 +141,9 @@ const Nav = styled.nav`
 `;
 const Li = styled(Link)`
   color: whitesmoke;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   text-decoration: none;
+  font-weight: bold;
   font-family: "Roboto", sans-serif;
 `;
 const Links = styled(Link)`

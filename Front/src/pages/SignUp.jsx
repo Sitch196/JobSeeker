@@ -17,9 +17,11 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [founded, setFounded] = useState("");
+  const [size, setSize] = useState("");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
@@ -37,7 +39,7 @@ const Signup = () => {
     } else if (name === "passwordConfirm") {
       setPasswordConfirm(value);
     } else if (name === "size") {
-      setFounded(value);
+      setSize(value);
     } else if (name === "location") {
       setLocation(value);
     } else if (name === "description") {
@@ -47,7 +49,7 @@ const Signup = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    setIsLoading(true);
     try {
       const response = await fetch(
         "http://127.0.0.1:5000/api/v1/companies/signup",
@@ -61,7 +63,7 @@ const Signup = () => {
             email,
             password,
             passwordConfirm,
-            founded,
+            size,
             location,
             description,
           }),
@@ -76,7 +78,7 @@ const Signup = () => {
     } catch (error) {
       console.error("signup error", error);
     }
-
+    setIsLoading(false);
     console.log("Signed up...");
   };
 
@@ -133,7 +135,7 @@ const Signup = () => {
             <Input
               type="number"
               name="size"
-              value={founded}
+              value={size}
               onChange={handleChange}
             />
 
@@ -152,7 +154,9 @@ const Signup = () => {
               onChange={handleChange}
             />
           </Containerwrapper>
-          <SignupButton type="submit">Sign Up</SignupButton>
+          <SignupButton type="submit" disabled={isLoading}>
+            {isLoading ? <Spinner /> : "Sign up"}
+          </SignupButton>
           <p>
             Already have an account? Log in <Link to="/login">here</Link>.
           </p>
@@ -163,7 +167,20 @@ const Signup = () => {
 };
 
 export default Signup;
-
+const Spinner = styled.div`
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: whitesmoke;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`;
 const SignupContainer = styled.div`
   display: flex;
   height: 100vh;
@@ -171,10 +188,11 @@ const SignupContainer = styled.div`
   justify-content: center;
   overflow-y: auto;
   background-color: whitesmoke;
-  border: 1px solid red;
+
   @media (max-width: 1250px) {
     flex-direction: column;
-    overflow-y: auto;
+    overflow-y: initial;
+    height: auto;
   }
 `;
 
@@ -187,10 +205,10 @@ const SignupLeft = styled.div`
   left: 0;
 
   @media (max-width: 1250px) {
-    position: relative;
+    position: initial;
     width: 100%;
-    height: 100%;
-    margin-top: 35rem;
+    height: auto;
+    padding-bottom: 2rem;
   }
 `;
 const SignupRight = styled.div`
@@ -203,6 +221,7 @@ const SignupRight = styled.div`
   padding: 2rem;
   background-color: whitesmoke;
   margin-left: 50%;
+
   @media (max-width: 1250px) {
     margin-left: 0;
     width: 100%;
@@ -236,12 +255,6 @@ const Containerwrapper = styled.div`
   justify-content: center;
   height: 100%;
   width: 100%;
-  /* @media (width<500px) {
-    width: 80%;
-  }
-  @media (width<400px) {
-    width: 70%;
-  } */
 `;
 
 const Label = styled.label`
@@ -253,13 +266,13 @@ const Label = styled.label`
 const Input = styled.input`
   width: 100%;
   height: 45px;
-  /* margin-top: 10px; */
   text-indent: 0.2rem;
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
   &:focus {
-    outline: rgba(76, 53, 222, 0.5);
+    border-color: rgba(76, 53, 222, 0.5);
+    outline-color: rgba(76, 53, 222, 0.5);
   }
 `;
 

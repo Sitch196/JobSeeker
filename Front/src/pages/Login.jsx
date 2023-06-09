@@ -3,87 +3,59 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import interview from "../../../assets/interview-removebg-preview.png";
 import shortLogo from "../../../assets/short-logo.png";
-import { createGlobalStyle } from "styled-components";
 
-// const GlobalStyle = createGlobalStyle`
-//   @media(width<600px){
-//       * {
-//         font-size: 65%;
-//       }
-//   }
-// `;
-const Signup = () => {
-  const [name, setName] = useState("");
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [founded, setFounded] = useState("");
-  const [location, setLocation] = useState("");
-  const [description, setDescription] = useState("");
+  const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    if (name === "email") {
+      setEmail(value);
+    } else if (name === "password") {
+      setPassword(value);
+    }
+  };
 
   const handleLogoClick = () => {
     navigate("/");
   };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    if (name === "name") {
-      setName(value);
-    } else if (name === "email") {
-      setEmail(value);
-    } else if (name === "password") {
-      setPassword(value);
-    } else if (name === "passwordConfirm") {
-      setPasswordConfirm(value);
-    } else if (name === "size") {
-      setFounded(value);
-    } else if (name === "location") {
-      setLocation(value);
-    } else if (name === "description") {
-      setDescription(value);
-    }
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    setLoading(true); // Start loading
+
     try {
       const response = await fetch(
-        "http://127.0.0.1:5000/api/v1/companies/signup",
+        "http://127.0.0.1:5000/api/v1/companies/login",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            name,
-            email,
-            password,
-            passwordConfirm,
-            founded,
-            location,
-            description,
-          }),
+          body: JSON.stringify({ email, password }),
         }
       );
       if (!response.ok) {
-        throw new Error("signup failed");
+        throw new Error("login failed");
       }
 
       const data = await response.json();
       console.log(data);
     } catch (error) {
-      console.error("signup error", error);
+      console.error("login error", error);
     }
 
-    console.log("Signed up...");
+    setLoading(false); // Stop loading
+
+    console.log("Logged in...");
   };
 
   return (
     <SignupContainer>
-      {/* <GlobalStyle /> */}
-
       <SignupLeft>
         <Logo src={shortLogo} alt="company logo" onClick={handleLogoClick} />
         <Container>
@@ -113,7 +85,12 @@ const Signup = () => {
               onChange={handleChange}
             />
           </Containerwrapper>
-          <SignupButton type="submit">Log in</SignupButton>
+          <SignupButton type="submit" disabled={isLoading}>
+            {" "}
+            {/* Disable the button when loading */}
+            {isLoading ? <Spinner /> : "Log in"}{" "}
+            {/* Show "Loading..." when loading */}
+          </SignupButton>
           <p>
             Don't have an account? Sign up <Link to="/signup">here</Link>.
           </p>
@@ -123,7 +100,21 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;
+const Spinner = styled.div`
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: whitesmoke;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`;
 
 const SignupContainer = styled.div`
   display: flex;
@@ -132,10 +123,12 @@ const SignupContainer = styled.div`
   justify-content: center;
   overflow-y: auto;
   background-color: whitesmoke;
-  border: 1px solid red;
+  /* border: 1px solid red; */
+
   @media (max-width: 1250px) {
     flex-direction: column;
-    overflow-y: auto;
+    overflow-y: initial;
+    height: auto;
   }
 `;
 
@@ -148,10 +141,10 @@ const SignupLeft = styled.div`
   left: 0;
 
   @media (max-width: 1250px) {
-    position: relative;
+    position: initial;
     width: 100%;
-    height: 100%;
-    margin-top: 35rem;
+    height: auto;
+    padding-bottom: 2rem;
   }
 `;
 const SignupRight = styled.div`
@@ -164,6 +157,7 @@ const SignupRight = styled.div`
   padding: 2rem;
   background-color: whitesmoke;
   margin-left: 50%;
+
   @media (max-width: 1250px) {
     margin-left: 0;
     width: 100%;
@@ -197,12 +191,6 @@ const Containerwrapper = styled.div`
   justify-content: center;
   height: 100%;
   width: 100%;
-  /* @media (width<500px) {
-    width: 80%;
-  }
-  @media (width<400px) {
-    width: 70%;
-  } */
 `;
 
 const Label = styled.label`
@@ -214,13 +202,12 @@ const Label = styled.label`
 const Input = styled.input`
   width: 100%;
   height: 45px;
-  /* margin-top: 10px; */
   text-indent: 0.2rem;
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
   &:focus {
-    outline: rgba(76, 53, 222, 0.5);
+    outline-color: rgba(76, 53, 222, 0.5);
   }
 `;
 
