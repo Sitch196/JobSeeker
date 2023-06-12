@@ -2,10 +2,16 @@ import styled from "styled-components";
 import conference from "../../../assets/conference.png";
 import Reviews from "../components/Reviews";
 import pic1 from "../../../assets/reviewers/pic1.jpg";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  const toJobs = function () {
+    navigate("/jobs");
+  };
   return (
-    <div>
+    <BigWrapper>
       <HomeContainer>
         <TitleContainer>
           <h1>WorkUp: Your Gateway to Professional Success</h1>
@@ -13,7 +19,7 @@ const Home = () => {
             Discover Opportunities, Connect with Employers, and Build a
             Fulfilling Career Journey
           </h4>
-          <TitleBtn>Get Started</TitleBtn>
+          <TitleBtn onClick={toJobs}>Get Started</TitleBtn>
         </TitleContainer>
         <StockImage>
           <Img src={conference} alt="stock image of people in workplace" />
@@ -21,7 +27,9 @@ const Home = () => {
       </HomeContainer>
       <ReviewContainer>
         <MainTitle>
-          <h2>Look what people are saying about WorkUp ✨:</h2>
+          <h2 style={{ color: "whitesmoke" }}>
+            Look what people are saying about WorkUp ✨:
+          </h2>
         </MainTitle>
         <Reviews
           name="Michael K Ambol"
@@ -30,11 +38,15 @@ const Home = () => {
           review="The job alerts feature on this platform is a game-changer. I received customized notifications based on my preferences, which helped me stay ahead in my job search. It's a fantastic tool!"
         />
       </ReviewContainer>
-    </div>
+    </BigWrapper>
   );
 };
 
 export default Home;
+const BigWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 const HomeContainer = styled.div`
   width: 100%;
   /* height: 35rem; */
@@ -49,7 +61,7 @@ const HomeContainer = styled.div`
   }
 `;
 const ReviewContainer = styled.div`
-  background-color: white;
+  background-color: #4c35de;
 `;
 const TitleContainer = styled.div`
   display: flex;

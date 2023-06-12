@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUser,
+  faBriefcase,
+  faQuestionCircle,
+  faUsers,
+  faSignOutAlt,
+} from "@fortawesome/free-solid-svg-icons";
+
 import styled, { keyframes } from "styled-components";
 import Login from "../../pages/Login";
+import profile from "../../../../assets/profileDefault.png";
 import shortlogo from "../../../../assets/short-logo.png";
+import { useContext } from "react";
+import { AuthContext } from "../../../Context/authContext";
+
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setShowMenu(!showMenu);
-    setIsBurgerMenuOpen(!isBurgerMenuOpen);
-  };
-
-  const closeMenu = () => {
-    setShowMenu(false);
-    setIsBurgerMenuOpen(false);
-  };
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const handleResize = () => {
@@ -37,6 +43,31 @@ const Header = () => {
     }
   }, [windowWidth]);
 
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    setIsLoggedIn(!!user);
+    setIsLoading(false);
+  }, []);
+
+  const toggleMenu = () => {
+    setShowMenu(!showMenu);
+    setIsBurgerMenuOpen(!isBurgerMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setShowMenu(false);
+    setIsBurgerMenuOpen(false);
+  };
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem("user");
+  };
+
   return (
     <HeaderWrapper>
       <Headercontainer>
@@ -56,9 +87,41 @@ const Header = () => {
             </ul>
           </Nav>
         </LogoNav>
-        <LoginBtn to="/login" onClick={closeMenu}>
-          Sign In
-        </LoginBtn>
+        {isLoading ? (
+          ""
+        ) : isLoggedIn ? (
+          <CompanyName onClick={toggleDropdown}>
+            <Img src={profile} alt="default profile picture" />
+            {showDropdown && (
+              <Dropdown>
+                <DropdownItem>
+                  <FontAwesomeIcon icon={faUser} />
+                  Profile
+                </DropdownItem>
+                <DropdownItem>
+                  <FontAwesomeIcon icon={faBriefcase} />
+                  Post a Job
+                </DropdownItem>
+                <DropdownItem>
+                  <FontAwesomeIcon icon={faQuestionCircle} />
+                  Support
+                </DropdownItem>
+                <DropdownItem>
+                  <FontAwesomeIcon icon={faUsers} />
+                  Partners
+                </DropdownItem>
+                <DropdownItem onClick={handleLogout}>
+                  <FontAwesomeIcon icon={faSignOutAlt} />
+                  Log Out
+                </DropdownItem>
+              </Dropdown>
+            )}
+          </CompanyName>
+        ) : (
+          <LoginBtn to="/login" onClick={closeMenu}>
+            Log In
+          </LoginBtn>
+        )}
         <BurgerMenuIcon onClick={toggleMenu}>
           {isBurgerMenuOpen ? "✕" : "☰"}
         </BurgerMenuIcon>
@@ -75,9 +138,13 @@ const Header = () => {
             <Li to="/about" onClick={closeMenu}>
               About
             </Li>
-            <Li to="/login" onClick={closeMenu}>
-              Log In
-            </Li>
+            {isLoggedIn ? (
+              "Profile"
+            ) : (
+              <Li to="/login" onClick={closeMenu}>
+                Log In
+              </Li>
+            )}
           </ul>
         </BurgerMenu>
       )}
@@ -86,23 +153,78 @@ const Header = () => {
 };
 
 export default Header;
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+const Dropdown = styled.div`
+  border: 1px solid lightgray;
+  position: absolute;
+  top: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  right: 0;
+  width: 25rem;
+  /* height: 40vh; */
+  background-color: #4c35de;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  animation: ${fadeIn} 0.2s ease-in-out;
+`;
+
+const DropdownItem = styled.div`
+  padding: 5px 10px;
+  color: whitesmoke;
+  font-size: 1.4rem;
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+
+  height: 3rem;
+  cursor: pointer;
+  &:hover {
+    font-weight: bold;
+  }
+`;
+
 const Img = styled.img`
   width: 4rem;
+  animation: ${fadeIn} 0.2s ease-in-out;
 `;
 const LoginBtn = styled(Link)`
   border: 2px solid lightgray;
   padding: 1rem 1.8rem;
   color: whitesmoke;
-  background-color: rgba(245, 245, 245, 0.2);
+  /* background-color: rgba(245, 245, 245, 0.2); */
   /* text-transform: uppercase; */
   text-decoration: none;
   font-family: "Roboto";
-  border-radius: 10px;
-
+  border-radius: 5px;
+  width: 10rem;
+  font-size: 1.3rem;
+  text-align: center;
+  font-weight: bold;
   &:hover {
     font-weight: bold;
     background-color: rgba(245, 245, 245, 0.3);
   }
+  @media (width<768px) {
+    display: none;
+  }
+`;
+const CompanyName = styled(Link)`
+  /* background-color: whitesmoke; */
+  text-decoration: none;
+  font-family: "Roboto";
+  border-radius: 10px;
   @media (width<768px) {
     display: none;
   }

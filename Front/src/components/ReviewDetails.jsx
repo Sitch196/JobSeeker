@@ -21,9 +21,11 @@ const Container = styled.div`
   width: 25%;
   display: flex;
   flex-direction: column;
-  border: 1px solid lightgray;
+  /* border: 1px solid lightgray; */
+  background-color: #4c35de;
+  border-radius: 5px;
   font-family: "Roboto";
-  color: black;
+  color: whitesmoke;
   margin: 1rem;
   padding: 1rem;
   @media (width<1100px) {
@@ -34,8 +36,7 @@ const Container = styled.div`
     width: 100%;
   }
   gap: 0.5rem;
-  box-shadow: 0 0 7px 3px lightgray;
-  background-color: whitesmoke;
+  box-shadow: 0 0 3px 1px black;
 `;
 const Title = styled.div`
   display: flex;

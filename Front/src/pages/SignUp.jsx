@@ -3,15 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import interview from "../../../assets/interview-removebg-preview.png";
 import shortLogo from "../../../assets/short-logo.png";
-import { createGlobalStyle } from "styled-components";
 
-// const GlobalStyle = createGlobalStyle`
-//   @media(width<600px){
-//       * {
-//         font-size: 65%;
-//       }
-//   }
-// `;
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -21,6 +13,7 @@ const Signup = () => {
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -49,6 +42,18 @@ const Signup = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (
+      !name ||
+      !email ||
+      !password ||
+      !passwordConfirm ||
+      !size ||
+      !location ||
+      !description
+    ) {
+      setError("Please fill in all the fields.");
+      return;
+    }
     setIsLoading(true);
     try {
       const response = await fetch(
@@ -69,23 +74,23 @@ const Signup = () => {
           }),
         }
       );
-      if (!response.ok) {
-        throw new Error("signup failed");
-      }
 
       const data = await response.json();
+      if (response.ok) {
+        navigate("/login");
+      }
+      if (!response.ok) {
+        setError(data.message);
+      }
       console.log(data);
     } catch (error) {
       console.error("signup error", error);
     }
     setIsLoading(false);
-    console.log("Signed up...");
   };
 
   return (
     <SignupContainer>
-      {/* <GlobalStyle /> */}
-
       <SignupLeft>
         <Logo src={shortLogo} alt="company logo" onClick={handleLogoClick} />
         <Container>
@@ -135,6 +140,7 @@ const Signup = () => {
             <Input
               type="number"
               name="size"
+              min="1"
               value={size}
               onChange={handleChange}
             />
@@ -154,11 +160,17 @@ const Signup = () => {
               onChange={handleChange}
             />
           </Containerwrapper>
-          <SignupButton type="submit" disabled={isLoading}>
+          <Errormsg>{error}</Errormsg>
+
+          <SignupButton
+            type="submit"
+            disabled={isLoading}
+            onClick={handleSubmit}
+          >
             {isLoading ? <Spinner /> : "Sign up"}
           </SignupButton>
           <p>
-            Already have an account? Log in <Link to="/login">here</Link>.
+            Already have an account? Login <Link to="/login">here</Link>.
           </p>
         </SignupForm>
       </SignupRight>
@@ -167,6 +179,14 @@ const Signup = () => {
 };
 
 export default Signup;
+const Errormsg = styled.p`
+  width: 100%;
+  text-align: center;
+  color: red;
+  /* padding: 0.4rem; */
+  margin: 0.2rem;
+  border-radius: 5px;
+`;
 const Spinner = styled.div`
   border: 4px solid rgba(0, 0, 0, 0.1);
   border-left-color: whitesmoke;
@@ -246,7 +266,7 @@ const SignupForm = styled.form`
     padding: 2.5rem;
   }
   @media (width<400px) {
-    padding: 2.8rem 1.2rem;
+    padding: 3.1rem 1.2rem;
   }
 `;
 const Containerwrapper = styled.div`
@@ -322,7 +342,7 @@ const SignupButton = styled.button`
   text-transform: uppercase;
   padding: 0.5rem 1rem;
   cursor: pointer;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   padding: 0.8rem 0;
   border-radius: 5px;
   width: 100%;

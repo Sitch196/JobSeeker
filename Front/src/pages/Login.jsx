@@ -3,11 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import interview from "../../../assets/interview-removebg-preview.png";
 import shortLogo from "../../../assets/short-logo.png";
+import { useContext } from "react";
+import { AuthContext } from "../../Context/authContext";
 
 const Login = () => {
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (event) => {
@@ -25,9 +29,11 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    if (!email || !password) {
+      setError("Email or Password Fields Can not be empty");
+      return;
+    }
     setLoading(true); // Start loading
-
     try {
       const response = await fetch(
         "http://127.0.0.1:5000/api/v1/companies/login",
@@ -39,19 +45,24 @@ const Login = () => {
           body: JSON.stringify({ email, password }),
         }
       );
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem("user", JSON.stringify(data));
+
+        setIsLoggedIn(true);
+        navigate("/");
+        console.log("logged in..✨");
+      }
       if (!response.ok) {
-        throw new Error("login failed");
+        setError(data.message);
       }
 
-      const data = await response.json();
       console.log(data);
     } catch (error) {
       console.error("login error", error);
     }
 
-    setLoading(false); // Stop loading
-
-    console.log("Logged in...");
+    setLoading(false);
   };
 
   return (
@@ -85,11 +96,10 @@ const Login = () => {
               onChange={handleChange}
             />
           </Containerwrapper>
+          <Errormsg>{error}</Errormsg>
           <SignupButton type="submit" disabled={isLoading}>
             {" "}
-            {/* Disable the button when loading */}
             {isLoading ? <Spinner /> : "Log in"}{" "}
-            {/* Show "Loading..." when loading */}
           </SignupButton>
           <p>
             Don't have an account? Sign up <Link to="/signup">here</Link>.
@@ -101,6 +111,18 @@ const Login = () => {
 };
 
 export default Login;
+const Errormsg = styled.p`
+  /* border: 1px solid red; */
+  width: 100%;
+  text-align: center;
+  color: red;
+
+  margin: 0.2rem;
+  border-radius: 5px;
+  @media (width<500px) {
+    font-size: 0.8rem;
+  }
+`;
 const Spinner = styled.div`
   border: 4px solid rgba(0, 0, 0, 0.1);
   border-left-color: whitesmoke;

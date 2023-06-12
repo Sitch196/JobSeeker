@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const Company = require("../models/companyModel");
 const bcrypt = require("bcrypt");
+const validator = require("validator");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -11,11 +12,27 @@ const signToken = (id) => {
 
 exports.signup = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, password, name } = req.body;
+
     const exists = await Company.findOne({ email });
+    const dublicatename = await Company.findOne({ name });
 
     if (exists) {
       throw new Error("Email already in use");
+    }
+    if (dublicatename) {
+      throw new Error("Company with this name already registered");
+    }
+    if (
+      !validator.isStrongPassword(password, {
+        minLength: 6,
+        minLowercase: 0,
+        minUppercase: 0,
+        minNumbers: 0,
+        minSymbols: 0,
+      })
+    ) {
+      throw Error("Password needs to be at least 6 Characters");
     }
 
     const newUser = await Company.create(req.body);
@@ -52,7 +69,7 @@ exports.login = async (req, res) => {
     if (!user) {
       return res.status(401).json({
         status: "fail",
-        message: "incorrect Email or password",
+        message: "Incorrect Email or password",
       });
     }
 
@@ -64,7 +81,7 @@ exports.login = async (req, res) => {
     if (!isPasswordCorrect) {
       return res.status(401).json({
         status: "fail",
-        message: "incorrect Email or password",
+        message: "Incorrect Email or password",
       });
     }
 
