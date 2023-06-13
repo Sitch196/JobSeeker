@@ -6,9 +6,12 @@ export const AuthContext = createContext();
 // Create a provider component
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [image, setImage] = useState("");
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, setIsLoggedIn, image, setImage }}
+    >
       {children}
     </AuthContext.Provider>
   );

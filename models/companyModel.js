@@ -29,9 +29,7 @@ const companySchema = new mongoose.Schema(
         message: "passwords are not the same",
       },
     },
-    founded: {
-      type: Number,
-    },
+
     size: {
       type: Number,
       required: [true, "A company must have a size"],
@@ -47,6 +45,10 @@ const companySchema = new mongoose.Schema(
       type: String,
       enum: ["user", "admin"],
       default: "user",
+    },
+    image: {
+      type: String,
+      required: true,
     },
   },
   {

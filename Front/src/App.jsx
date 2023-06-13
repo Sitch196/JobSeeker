@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Jobs from "./pages/Jobs";
 import About from "./pages/About";
+import AddJob from "./pages/AddJob";
 // import "./app.css";
 
 const GlobalStyle = createGlobalStyle`
@@ -48,6 +49,15 @@ function App() {
             <div>
               {" "}
               <Header /> <About />
+            </div>
+          }
+        />
+        <Route
+          path="/addjob"
+          element={
+            <div>
+              {" "}
+              <Header /> <AddJob />
             </div>
           }
         />

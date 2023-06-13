@@ -22,7 +22,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   /* border: 1px solid lightgray; */
-  background-color: #4c35de;
+  background-color: rgba(0, 8, 255, 0.2);
   border-radius: 5px;
   font-family: "Roboto";
   color: whitesmoke;

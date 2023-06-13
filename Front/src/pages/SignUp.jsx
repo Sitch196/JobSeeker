@@ -3,8 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import interview from "../../../assets/interview-removebg-preview.png";
 import shortLogo from "../../../assets/short-logo.png";
+import { useContext } from "react";
+import { AuthContext } from "../../Context/authContext";
 
 const Signup = () => {
+  const { image, setImage } = useContext(AuthContext);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +26,7 @@ const Signup = () => {
   };
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
+    const { name, value, files } = event.target;
     if (name === "name") {
       setName(value);
     } else if (name === "email") {
@@ -37,6 +41,10 @@ const Signup = () => {
       setLocation(value);
     } else if (name === "description") {
       setDescription(value);
+    } else if (name === "image") {
+      const uploadedImage = files[0];
+      setImage(uploadedImage);
+      setImage(uploadedImage);
     }
   };
 
@@ -56,22 +64,21 @@ const Signup = () => {
     }
     setIsLoading(true);
     try {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("passwordConfirm", passwordConfirm);
+      formData.append("size", size);
+      formData.append("location", location);
+      formData.append("description", description);
+      formData.append("image", image);
       const response = await fetch(
         "http://127.0.0.1:5000/api/v1/companies/signup",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            password,
-            passwordConfirm,
-            size,
-            location,
-            description,
-          }),
+
+          body: formData,
         }
       );
 
@@ -82,7 +89,6 @@ const Signup = () => {
       if (!response.ok) {
         setError(data.message);
       }
-      console.log(data);
     } catch (error) {
       console.error("signup error", error);
     }
@@ -152,6 +158,13 @@ const Signup = () => {
               value={location}
               onChange={handleChange}
             />
+            <Label>Image</Label>
+            <Input
+              type="file"
+              name="image"
+              onChange={handleChange}
+              accept="image/*"
+            />
 
             <Label>Description</Label>
             <Textarea
@@ -183,7 +196,6 @@ const Errormsg = styled.p`
   width: 100%;
   text-align: center;
   color: red;
-  /* padding: 0.4rem; */
   margin: 0.2rem;
   border-radius: 5px;
 `;
@@ -259,8 +271,26 @@ const SignupForm = styled.form`
   padding: 3rem;
   box-shadow: 0 2px 3px 0 lightgray;
   width: 100%;
-  height: 95vh;
+  /* height: 95vh; */
   padding: 3.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #4c35de;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(76, 53, 222, 0.3);
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
 
   @media (width<500px) {
     padding: 2.5rem;

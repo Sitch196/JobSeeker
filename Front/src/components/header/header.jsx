@@ -10,8 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import styled, { keyframes } from "styled-components";
-import Login from "../../pages/Login";
-import profile from "../../../../assets/profileDefault.png";
+import profile from "../../../../assets/profile.png";
 import shortlogo from "../../../../assets/short-logo.png";
 import { useContext } from "react";
 import { AuthContext } from "../../../Context/authContext";
@@ -23,6 +22,16 @@ const Header = () => {
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [company, setCompany] = useState(null);
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    setIsLoggedIn(!!user);
+    setUser(user && JSON.parse(user));
+
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -44,10 +53,28 @@ const Header = () => {
   }, [windowWidth]);
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    setIsLoggedIn(!!user);
-    setIsLoading(false);
-  }, []);
+    const fetchData = async () => {
+      try {
+        if (user && user.id) {
+          const response = await fetch(
+            `http://127.0.0.1:5000/api/v1/companies/${user.id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+              },
+            }
+          );
+          const data = await response.json();
+          setCompany(data);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [user]);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -91,29 +118,29 @@ const Header = () => {
           ""
         ) : isLoggedIn ? (
           <CompanyName onClick={toggleDropdown}>
-            <Img src={profile} alt="default profile picture" />
+            <Img src={profile} alt="profile default picture" />
             {showDropdown && (
               <Dropdown>
-                <DropdownItem>
+                <LinkTo>
                   <FontAwesomeIcon icon={faUser} />
                   Profile
-                </DropdownItem>
-                <DropdownItem>
+                </LinkTo>
+                <LinkTo to="/addjob">
                   <FontAwesomeIcon icon={faBriefcase} />
                   Post a Job
-                </DropdownItem>
-                <DropdownItem>
+                </LinkTo>
+                <LinkTo>
                   <FontAwesomeIcon icon={faQuestionCircle} />
                   Support
-                </DropdownItem>
-                <DropdownItem>
+                </LinkTo>
+                <LinkTo>
                   <FontAwesomeIcon icon={faUsers} />
                   Partners
-                </DropdownItem>
-                <DropdownItem onClick={handleLogout}>
+                </LinkTo>
+                <LinkTo onClick={handleLogout}>
                   <FontAwesomeIcon icon={faSignOutAlt} />
                   Log Out
-                </DropdownItem>
+                </LinkTo>
               </Dropdown>
             )}
           </CompanyName>
@@ -139,7 +166,12 @@ const Header = () => {
               About
             </Li>
             {isLoggedIn ? (
-              "Profile"
+              <>
+                <Li to="/jobs" onClick={closeMenu}>
+                  Profile
+                </Li>
+                <Li onClick={handleLogout}>Log Out</Li>
+              </>
             ) : (
               <Li to="/login" onClick={closeMenu}>
                 Log In
@@ -179,14 +211,16 @@ const Dropdown = styled.div`
   padding: 10px;
   animation: ${fadeIn} 0.2s ease-in-out;
 `;
-
-const DropdownItem = styled.div`
+const LinkTo = styled(Link)`
   padding: 5px 10px;
+  /* border: 1px solid red; */
   color: whitesmoke;
   font-size: 1.4rem;
   display: flex;
+  align-items: center;
   gap: 0.5rem;
   width: 100%;
+  text-decoration: none;
 
   height: 3rem;
   cursor: pointer;
@@ -195,16 +229,35 @@ const DropdownItem = styled.div`
   }
 `;
 
+// const DropdownItem = styled.div`
+//   padding: 5px 10px;
+//   border: 1px solid red;
+//   color: whitesmoke;
+//   font-size: 1.4rem;
+//   display: flex;
+//   align-items: center;
+//   gap: 0.5rem;
+//   width: 100%;
+
+//   height: 3rem;
+//   cursor: pointer;
+//   &:hover {
+//     font-weight: bold;
+//   }
+// `;
+
 const Img = styled.img`
   width: 4rem;
   animation: ${fadeIn} 0.2s ease-in-out;
+  &:hover {
+    transform: translateY(-3px);
+    transition: 0.4s;
+  }
 `;
 const LoginBtn = styled(Link)`
   border: 2px solid lightgray;
   padding: 1rem 1.8rem;
   color: whitesmoke;
-  /* background-color: rgba(245, 245, 245, 0.2); */
-  /* text-transform: uppercase; */
   text-decoration: none;
   font-family: "Roboto";
   border-radius: 5px;
@@ -239,10 +292,8 @@ const HeaderWrapper = styled.div`
   background: linear-gradient(to bottom, #4c35de, #4c35de);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  /* border: 1px solid rgba(140, 141, 151, 0.28); */
   padding: 1.5rem;
   position: relative;
-  /* border: 1px solid red; */
 `;
 
 const Headercontainer = styled.header`

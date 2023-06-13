@@ -102,6 +102,10 @@ const TitleBtn = styled.button`
   background-color: whitesmoke;
   cursor: pointer;
   margin-bottom: 1rem;
+  &:hover {
+    box-shadow: inset 0 0 4px black;
+    border: none;
+  }
   @media (width<500px) {
     width: 10rem;
     height: 3rem;

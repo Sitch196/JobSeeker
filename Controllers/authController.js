@@ -12,7 +12,15 @@ const signToken = (id) => {
 
 exports.signup = async (req, res) => {
   try {
-    const { email, password, name } = req.body;
+    const {
+      name,
+      email,
+      password,
+      passwordConfirm,
+      size,
+      location,
+      description,
+    } = req.body;
 
     const exists = await Company.findOne({ email });
     const dublicatename = await Company.findOne({ name });
@@ -34,8 +42,18 @@ exports.signup = async (req, res) => {
     ) {
       throw Error("Password needs to be at least 6 Characters");
     }
+    const image = req.file ? req.file.path : "";
 
-    const newUser = await Company.create(req.body);
+    const newUser = await Company.create({
+      name,
+      email,
+      password,
+      passwordConfirm,
+      size,
+      location,
+      description,
+      image,
+    });
     const token = signToken(newUser._id);
 
     res.status(201).json({
@@ -88,6 +106,7 @@ exports.login = async (req, res) => {
     const token = signToken(user._id);
     res.status(200).json({
       status: "success",
+      id: user._id,
       token,
     });
   } catch (err) {

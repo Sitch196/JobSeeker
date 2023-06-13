@@ -71,8 +71,8 @@ const Login = () => {
         <Logo src={shortLogo} alt="company logo" onClick={handleLogoClick} />
         <Container>
           <TitleContainer>
-            <Title>Create an Account ✨</Title>
-            <Title>Sign up to get started</Title>
+            <Title>Welcome back✨</Title>
+            <Title>Log in to get started</Title>
           </TitleContainer>
           <Img src={interview} alt="job interview stock photo" />
         </Container>
@@ -112,11 +112,9 @@ const Login = () => {
 
 export default Login;
 const Errormsg = styled.p`
-  /* border: 1px solid red; */
   width: 100%;
   text-align: center;
   color: red;
-
   margin: 0.2rem;
   border-radius: 5px;
   @media (width<500px) {
@@ -145,7 +143,6 @@ const SignupContainer = styled.div`
   justify-content: center;
   overflow-y: auto;
   background-color: whitesmoke;
-  /* border: 1px solid red; */
 
   @media (max-width: 1250px) {
     flex-direction: column;
@@ -196,15 +193,21 @@ const SignupForm = styled.form`
   border: 1px solid lightgray;
   padding: 3rem;
   box-shadow: 0 2px 3px 0 lightgray;
-  width: 100%;
+  width: 90%;
   height: 20rem;
   padding: 3.5rem;
+  @media (width<1250px) {
+    width: 70%;
+  }
+  @media (width<700px) {
+    width: 100%;
+  }
 
   @media (width<500px) {
     padding: 2.5rem;
   }
   @media (width<400px) {
-    padding: 2.8rem 1.2rem;
+    padding: 2.8rem 1rem;
   }
 `;
 const Containerwrapper = styled.div`
