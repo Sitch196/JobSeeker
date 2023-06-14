@@ -229,23 +229,6 @@ const LinkTo = styled(Link)`
   }
 `;
 
-// const DropdownItem = styled.div`
-//   padding: 5px 10px;
-//   border: 1px solid red;
-//   color: whitesmoke;
-//   font-size: 1.4rem;
-//   display: flex;
-//   align-items: center;
-//   gap: 0.5rem;
-//   width: 100%;
-
-//   height: 3rem;
-//   cursor: pointer;
-//   &:hover {
-//     font-weight: bold;
-//   }
-// `;
-
 const Img = styled.img`
   width: 4rem;
   animation: ${fadeIn} 0.2s ease-in-out;
@@ -294,6 +277,7 @@ const HeaderWrapper = styled.div`
   -webkit-backdrop-filter: blur(10px);
   padding: 1.5rem;
   position: relative;
+  z-index: 10000;
 `;
 
 const Headercontainer = styled.header`

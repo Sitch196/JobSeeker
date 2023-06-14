@@ -7,13 +7,14 @@ import SignUp from "./pages/SignUp";
 import Jobs from "./pages/Jobs";
 import About from "./pages/About";
 import AddJob from "./pages/AddJob";
-// import "./app.css";
+import JobDetails from "./pages/JobDetails";
 
 const GlobalStyle = createGlobalStyle`
   *{
     margin:0;
     padding:0;
     box-sizing: border-box;
+    font-family: 'Roboto';
   
   }
 `;
@@ -40,6 +41,15 @@ function App() {
             <div>
               {" "}
               <Header /> <Jobs />
+            </div>
+          }
+        />
+        <Route
+          path="/jobs/:jobId"
+          element={
+            <div>
+              {" "}
+              <Header /> <JobDetails />
             </div>
           }
         />

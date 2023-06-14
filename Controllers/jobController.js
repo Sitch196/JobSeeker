@@ -1,9 +1,11 @@
 const Job = require("../models/jobModel");
-const Company = require("../models/companyModel");
 
 exports.getAllJobs = async (req, res) => {
   try {
-    const jobs = await Job.find().select("-__v");
+    const jobs = await Job.find().select("-__v").populate({
+      path: "company",
+      select: "name",
+    });
     res.status(200).json({
       status: "success",
       results: jobs.length,
