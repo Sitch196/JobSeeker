@@ -1,53 +1,78 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import jobGif from "../../../assets/jobGif.gif";
 import {
   faBuilding,
   faDollarSign,
   faMapMarkerAlt,
   faClock,
   faExternalLinkAlt,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import JobDetails from "./JobDetails";
 import Filter from "../components/Filter";
+import { AuthContext } from "../../Context/authContext";
 
 const Jobs = () => {
   const [error, setError] = useState(null);
-  const [jobs, setJobs] = useState([]);
-  const [selectedJobId, setSelectedJobId] = useState(null); // New state to store the selected job ID
-  const { jobId } = useParams();
+  const [selectedJobId, setSelectedJobId] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const { jobs: allJobs, setJobs } = useContext(AuthContext);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [filteredJobs, setFilteredJobs] = useState(allJobs);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch("http://127.0.0.1:5000/api/v1/jobs");
         if (!response.ok) {
-          throw new Error("Error fetching data");
+          setError(data.message);
         }
         const data = await response.json();
-        console.log("Data:", data);
-        setJobs(data.data.jobs); // Store the jobs data in the state
+        setJobs(data.data.jobs);
       } catch (error) {
         console.error("Error:", error);
-        setError(error.message);
       }
     };
 
     fetchData();
   }, []);
 
-  // Function to handle the "Go To Job" button click
+  useEffect(() => {
+    // Update filtered jobs whenever selected category changes
+    if (selectedCategory === "") {
+      setFilteredJobs(allJobs); // Show all jobs
+    } else {
+      const filtered = allJobs.filter(
+        (job) => job.category === selectedCategory
+      );
+      setFilteredJobs(filtered);
+    }
+  }, [selectedCategory, allJobs]);
+
   const handleGoToJob = (jobId) => {
     setSelectedJobId(jobId);
+    setIsExpanded(true);
   };
+
+  const handleCloseJob = () => {
+    setSelectedJobId(null);
+    setIsExpanded(false);
+  };
+
+  console.log(allJobs);
 
   return (
     <HugeWrapper>
-      <Filter />
+      <Filter
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+      />
       <Wrapper>
         <JobListing>
-          {jobs.map((job) => (
+          {filteredJobs.map((job) => (
             <JobItem key={job.id}>
               <JobHeader>
                 <ClockIcon>
@@ -78,11 +103,18 @@ const Jobs = () => {
             </JobItem>
           ))}
         </JobListing>
-        <SelectedJob>
-          {selectedJobId ? ( // Render the JobDetails component if a job ID is selected
-            <JobDetails jobId={selectedJobId} />
+        <SelectedJob isExpanded={isExpanded}>
+          {isExpanded ? (
+            <>
+              <CloseButton onClick={handleCloseJob}>
+                <FontAwesomeIcon icon={faTimes} />
+              </CloseButton>
+              <JobDetails jobId={selectedJobId} />
+            </>
           ) : (
-            <PlaceholderText>Select a job to view details</PlaceholderText>
+            <PlaceholderText>
+              <Img src={jobGif} alt="" />
+            </PlaceholderText>
           )}
         </SelectedJob>
       </Wrapper>
@@ -92,33 +124,74 @@ const Jobs = () => {
 };
 
 export default Jobs;
+
 const HugeWrapper = styled.div``;
+const Img = styled.img`
+  width: 90%;
+  border-radius: 50%;
+`;
 const Wrapper = styled.div`
+  width: 100%;
+  height: 40rem;
+  background-color: #4c35de;
+
   display: flex;
-  @media (width<800px) {
+  @media (max-width: 800px) {
     display: flex;
     flex-direction: column;
+    /* gap: 1rem; */
   }
 `;
 
 const SelectedJob = styled.div`
   width: 60%;
-  z-index: -1;
-  /* height: 400px; */
+  /* z-index: -1; */
   position: relative;
-  /* overflow: hidden; */
-  background-color: #4c35de;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  background-color: ${(props) =>
+    props.isExpanded ? "#4c35de" : "transparent"};
+  /* height: ${(props) => (props.isExpanded ? "100vh" : "40rem")}; */
+  @media (max-width: 800px) {
+    width: 100%;
+    height: ${(props) => (props.isExpanded ? "100vh" : "auto")};
+  }
 `;
-const PlaceholderText = styled.p``;
+const PlaceholderText = styled.p`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #4c35de;
+  @media (max-width: 800px) {
+    display: none;
+  }
+`;
 const CompanyTitle = styled.div``;
 const JobListing = styled.div`
   width: 50%;
-  height: 600px; /* Set the desired height */
+  /* height: 40rem; */
   overflow-y: auto; /* Enable vertical scrolling */
   border: 1px solid #4c35de;
   background-color: #4c35de;
-  @media (width<800px) {
+  @media (max-width: 800px) {
     width: 100%;
+  }
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #4c35de;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(76, 53, 222, 0.3);
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
   }
 `;
 const JobHeader = styled.div`
@@ -204,6 +277,23 @@ const JobDescription = styled.p`
   margin-top: 10px;
   font-size: 14px;
   color: #555;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 0.5rem;
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 1;
+
+  &:hover {
+    color: #ccc;
+  }
 `;
 
 const Errormsg = styled.p`

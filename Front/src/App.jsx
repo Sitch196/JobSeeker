@@ -8,6 +8,7 @@ import Jobs from "./pages/Jobs";
 import About from "./pages/About";
 import AddJob from "./pages/AddJob";
 import JobDetails from "./pages/JobDetails";
+import Footer from "./components/footer/footer";
 
 const GlobalStyle = createGlobalStyle`
   *{
@@ -30,6 +31,7 @@ function App() {
             <div>
               <Header />
               <Home />
+              <Footer />
             </div>
           }
         />
@@ -40,7 +42,7 @@ function App() {
           element={
             <div>
               {" "}
-              <Header /> <Jobs />
+              <Header /> <Jobs /> <Footer />
             </div>
           }
         />
@@ -58,7 +60,7 @@ function App() {
           element={
             <div>
               {" "}
-              <Header /> <About />
+              <Header /> <About /> <Footer />
             </div>
           }
         />

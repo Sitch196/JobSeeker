@@ -118,6 +118,7 @@ const Header = () => {
           ""
         ) : isLoggedIn ? (
           <CompanyName onClick={toggleDropdown}>
+            {/* <h2>{user.name}</h2> */}
             <Img src={profile} alt="profile default picture" />
             {showDropdown && (
               <Dropdown>

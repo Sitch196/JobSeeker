@@ -1,21 +1,25 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../../Context/authContext";
 import styled from "styled-components";
 
-const Filter = () => {
+const Filter = ({ selectedCategory, setSelectedCategory }) => {
+  const { jobs } = useContext(AuthContext);
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
+
   return (
     <FilterContainer>
-      <SearchInput type="text" placeholder="Search jobs..." />
-      <Select>
+      <Select value={selectedCategory} onChange={handleCategoryChange}>
         <Option value="">All Categories</Option>
-        <Option value="category1">Category 1</Option>
-        <Option value="category2">Category 2</Option>
-        <Option value="category3">Category 3</Option>
-      </Select>
-      <Select>
-        <Option value="">All Locations</Option>
-        <Option value="location1">Location 1</Option>
-        <Option value="location2">Location 2</Option>
-        <Option value="location3">Location 3</Option>
+        {Array.from(new Set(jobs.map((job) => job.category))).map(
+          (category) => (
+            <Option key={category} value={category}>
+              {category}
+            </Option>
+          )
+        )}
       </Select>
     </FilterContainer>
   );
@@ -32,23 +36,8 @@ const FilterContainer = styled.div`
   background-color: #4c35de;
 `;
 
-const SearchInput = styled.input`
-  width: 100%;
-  max-width: 400px;
-  height: 3rem;
-  padding: 8px;
-  margin-bottom: 16px;
-  border: none;
-  font-size: 1.1rem;
-  border-radius: 4px;
-  background-color: #fff;
-  &:focus {
-    border-color: rgba(76, 53, 222, 0.5);
-    outline-color: rgba(76, 53, 222, 0.5);
-  }
-`;
-
 const Select = styled.select`
+  text-transform: uppercase;
   width: 100%;
   max-width: 400px;
   padding: 8px;
