@@ -6,6 +6,7 @@ import {
   faDollarSign,
   faMapMarkerAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import ModalComponent from "../components/Modal";
 
 const JobDetails = ({ jobId }) => {
   const [job, setJob] = useState(null);
@@ -64,11 +65,7 @@ const JobDetails = ({ jobId }) => {
 
       {isModalOpen && (
         <Modal>
-          <ModalContent>
-            <CloseButton onClick={closeModal}>X</CloseButton>
-            {/* Add modal content here */}
-            <ModalText>Modal content goes here...</ModalText>
-          </ModalContent>
+          <ModalComponent closeModal={closeModal} />
         </Modal>
       )}
     </JobWrapper>
