@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import conference from "../../../assets/conference.png";
 import Reviews from "../components/Reviews";
 import pic1 from "../../../assets/reviewers/pic1.jpg";
@@ -47,6 +47,17 @@ const BigWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
+const growShrinkAnimation = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+`;
 const HomeContainer = styled.div`
   width: 100%;
   /* height: 35rem; */
@@ -86,7 +97,9 @@ const MainTitle = styled.div`
   font-family: "Roboto";
   margin: 1rem;
 `;
-const StockImage = styled.div``;
+const StockImage = styled.div`
+  animation: ${growShrinkAnimation} 3s infinite;
+`;
 const Img = styled.img`
   width: 100%;
 `;

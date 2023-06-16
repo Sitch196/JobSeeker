@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
@@ -24,14 +24,7 @@ const Header = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [company, setCompany] = useState(null);
-
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    setIsLoggedIn(!!user);
-    setUser(user && JSON.parse(user));
-
-    setIsLoading(false);
-  }, []);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleResize = () => {
@@ -53,6 +46,14 @@ const Header = () => {
   }, [windowWidth]);
 
   useEffect(() => {
+    const user = localStorage.getItem("user");
+    setIsLoggedIn(!!user);
+    setUser(user && JSON.parse(user));
+
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         if (user && user.id) {
@@ -65,7 +66,7 @@ const Header = () => {
             }
           );
           const data = await response.json();
-          setCompany(data);
+          setCompany(data.data.company.name);
           setIsLoading(false);
         }
       } catch (error) {
@@ -93,6 +94,7 @@ const Header = () => {
   const handleLogout = () => {
     setIsLoggedIn(false);
     localStorage.removeItem("user");
+    navigate("/login");
   };
 
   return (
@@ -118,11 +120,13 @@ const Header = () => {
           ""
         ) : isLoggedIn ? (
           <CompanyName onClick={toggleDropdown}>
-            {/* <h2>{user.name}</h2> */}
-            <Img src={profile} alt="profile default picture" />
+            <ProfileContainer>
+              <h2>Welcome👏{company}</h2>
+              <Img src={profile} alt="profile default picture" />
+            </ProfileContainer>
             {showDropdown && (
               <Dropdown>
-                <LinkTo>
+                <LinkTo to="/me">
                   <FontAwesomeIcon icon={faUser} />
                   Profile
                 </LinkTo>
@@ -168,7 +172,7 @@ const Header = () => {
             </Li>
             {isLoggedIn ? (
               <>
-                <Li to="/jobs" onClick={closeMenu}>
+                <Li to="/me" onClick={closeMenu}>
                   Profile
                 </Li>
                 <Li onClick={handleLogout}>Log Out</Li>
@@ -186,7 +190,12 @@ const Header = () => {
 };
 
 export default Header;
-
+const ProfileContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: whitesmoke;
+`;
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -277,7 +286,8 @@ const HeaderWrapper = styled.div`
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   padding: 1.5rem;
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 10000;
 `;
 

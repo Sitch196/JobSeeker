@@ -6,7 +6,12 @@ const authController = require("../Controllers/authController");
 
 router.post("/signup", upload.single("image"), authController.signup);
 router.post("/login", authController.login);
-
+router.get(
+  "/me",
+  authController.protect,
+  companyController.getMe,
+  companyController.getCompany
+);
 router
   .route("/")
   .get(

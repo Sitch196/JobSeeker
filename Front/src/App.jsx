@@ -9,6 +9,7 @@ import About from "./pages/About";
 import AddJob from "./pages/AddJob";
 import JobDetails from "./pages/JobDetails";
 import Footer from "./components/footer/footer";
+import Profile from "./pages/Profile";
 
 const GlobalStyle = createGlobalStyle`
   *{
@@ -70,6 +71,15 @@ function App() {
             <div>
               {" "}
               <Header /> <AddJob />
+            </div>
+          }
+        />
+        <Route
+          path="/me"
+          element={
+            <div>
+              {" "}
+              <Header /> <Profile /> <Footer />
             </div>
           }
         />
