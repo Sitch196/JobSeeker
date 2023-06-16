@@ -51,16 +51,18 @@ const CreateJob = () => {
     const jobs = { title, category, salary, location, description };
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/v1/jobs", {
-        method: "POST",
-        body: JSON.stringify(jobs),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      const response = await fetch(
+        `https://workup-job-seeking-app.onrender.com/api/v1/jobs`,
+        {
+          method: "POST",
+          body: JSON.stringify(jobs),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
       const data = await response.json();
-      console.log(data);
 
       if (!response.ok) {
         setError(data.message);

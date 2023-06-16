@@ -33,10 +33,10 @@ const Login = () => {
       setError("Email or Password Fields Can not be empty");
       return;
     }
-    setLoading(true); // Start loading
+    setLoading(true);
     try {
       const response = await fetch(
-        "http://127.0.0.1:5000/api/v1/companies/login",
+        `https://workup-job-seeking-app.onrender.com/api/v1/companies/login`,
         {
           method: "POST",
           headers: {
@@ -56,10 +56,8 @@ const Login = () => {
       if (!response.ok) {
         setError(data.message);
       }
-
-      console.log(data);
     } catch (error) {
-      console.error("login error", error);
+      console.log("login error", error);
     }
 
     setLoading(false);

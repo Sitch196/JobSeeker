@@ -8,20 +8,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const JobDetails = ({ jobId }) => {
-  // Receive jobId as a prop
   const [job, setJob] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchJobDetails = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:5000/api/v1/jobs/${jobId}`
+          `https://workup-job-seeking-app.onrender.com/api/v1/jobs/${jobId}`
         );
         if (!response.ok) {
           throw new Error("Error fetching job details");
         }
         const data = await response.json();
-        console.log("Job Details:", data);
         setJob(data.data.job);
       } catch (error) {
         console.error("Error:", error);
@@ -30,6 +29,14 @@ const JobDetails = ({ jobId }) => {
 
     fetchJobDetails();
   }, [jobId]);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <JobWrapper>
@@ -46,6 +53,7 @@ const JobDetails = ({ jobId }) => {
           <JobLocation>
             <FontAwesomeIcon icon={faMapMarkerAlt} /> {job.location}
           </JobLocation>
+          <Button onClick={openModal}>Send Resume</Button>
           <JobDescription>{job.description}</JobDescription>
         </React.Fragment>
       ) : (
@@ -53,14 +61,20 @@ const JobDetails = ({ jobId }) => {
           <Spinner />
         </LoadingText>
       )}
+
+      {isModalOpen && (
+        <Modal>
+          <ModalContent>
+            <CloseButton onClick={closeModal}>X</CloseButton>
+            {/* Add modal content here */}
+            <ModalText>Modal content goes here...</ModalText>
+          </ModalContent>
+        </Modal>
+      )}
     </JobWrapper>
   );
 };
 
-export default JobDetails;
-const CompanyTitle = styled.div`
-  color: white;
-`;
 const JobWrapper = styled.div`
   border: 1px solid white;
   display: flex;
@@ -69,25 +83,15 @@ const JobWrapper = styled.div`
   justify-content: center;
   padding: 2rem;
 `;
-const Spinner = styled.div`
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-left-color: whitesmoke;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  animation: spin 1s linear infinite;
-  margin: 0 auto;
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-`;
 
 const JobTitle = styled.h3`
   margin: 0;
   font-size: 18px;
   color: whitesmoke;
+`;
+
+const CompanyTitle = styled.div`
+  color: white;
 `;
 
 const JobCategory = styled.p`
@@ -108,6 +112,13 @@ const JobLocation = styled.p`
   color: whitesmoke;
 `;
 
+const Button = styled.button`
+  width: 7rem;
+  padding: 0.8rem;
+  font-weight: bold;
+  cursor: pointer;
+`;
+
 const JobDescription = styled.p`
   margin-top: 10px;
   font-size: 14px;
@@ -118,3 +129,62 @@ const LoadingText = styled.p`
   font-size: 14px;
   color: whitesmoke;
 `;
+
+const Spinner = styled.div`
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: whitesmoke;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+const Modal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  cursor: pointer;
+`;
+
+const ModalContent = styled.div`
+  background-color: #4c35de;
+  border-radius: 4px;
+  padding: 1rem;
+  width: 20rem;
+  height: 30rem;
+  box-shadow: 0 0 7px black;
+  position: relative;
+  margin-top: 1.5rem;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: transparent;
+  border: none;
+  color: whitesmoke;
+  font-size: 1.5rem;
+  cursor: pointer;
+`;
+
+const ModalText = styled.p`
+  margin: 0;
+  font-size: 14px;
+  color: black;
+`;
+
+export default JobDetails;

@@ -58,7 +58,7 @@ const Header = () => {
       try {
         if (user && user.id) {
           const response = await fetch(
-            `http://127.0.0.1:5000/api/v1/companies/${user.id}`,
+            `https://workup-job-seeking-app.onrender.com/api/v1/companies/${user.id}`,
             {
               headers: {
                 Authorization: `Bearer ${user.token}`,
@@ -175,6 +175,7 @@ const Header = () => {
                 <Li to="/me" onClick={closeMenu}>
                   Profile
                 </Li>
+                <Li to="/addjob">Post a Job</Li>
                 <Li onClick={handleLogout}>Log Out</Li>
               </>
             ) : (

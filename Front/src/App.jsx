@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Header from "./components/header/header";
 import { createGlobalStyle } from "styled-components";
 import Home from "./pages/Home";
@@ -10,6 +10,8 @@ import AddJob from "./pages/AddJob";
 import JobDetails from "./pages/JobDetails";
 import Footer from "./components/footer/footer";
 import Profile from "./pages/Profile";
+import { useContext } from "react";
+import { AuthContext } from "../Context/authContext";
 
 const GlobalStyle = createGlobalStyle`
   *{
@@ -19,9 +21,16 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Roboto';
   
   }
-`;
+  `;
 
 function App() {
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
+
   return (
     <div>
       <GlobalStyle />
@@ -65,24 +74,38 @@ function App() {
             </div>
           }
         />
-        <Route
-          path="/addjob"
-          element={
-            <div>
-              {" "}
-              <Header /> <AddJob />
-            </div>
-          }
-        />
-        <Route
-          path="/me"
-          element={
-            <div>
-              {" "}
-              <Header /> <Profile /> <Footer />
-            </div>
-          }
-        />
+
+        {isLoggedIn ? (
+          <Route
+            path="/me"
+            element={
+              <div>
+                <Header />
+                <Profile onLogout={handleLogout} />
+                <Footer />
+              </div>
+            }
+          />
+        ) : (
+          <Route path="/me" element={<Navigate to="/login" replace={true} />} />
+        )}
+
+        {isLoggedIn ? (
+          <Route
+            path="/addjob"
+            element={
+              <div>
+                {" "}
+                <Header /> <AddJob onLogout={handleLogout} /> <Footer />
+              </div>
+            }
+          />
+        ) : (
+          <Route
+            path="/addjob"
+            element={<Navigate to="/login" replace={true} />}
+          />
+        )}
       </Routes>
     </div>
   );

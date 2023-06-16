@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import jobGif from "../../../assets/jobGif.gif";
 import {
@@ -16,6 +16,7 @@ import Filter from "../components/Filter";
 import { AuthContext } from "../../Context/authContext";
 
 const Jobs = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedJobId, setSelectedJobId] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -26,14 +27,19 @@ const Jobs = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/api/v1/jobs");
+        const response = await fetch(
+          `https://workup-job-seeking-app.onrender.com/api/v1/jobs`
+        );
         if (!response.ok) {
           setError(data.message);
+          setIsLoading(false);
         }
         const data = await response.json();
         setJobs(data.data.jobs);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error:", error);
+        setIsLoading(false);
       }
     };
 
@@ -41,9 +47,8 @@ const Jobs = () => {
   }, []);
 
   useEffect(() => {
-    // Update filtered jobs whenever selected category changes
     if (selectedCategory === "") {
-      setFilteredJobs(allJobs); // Show all jobs
+      setFilteredJobs(allJobs);
     } else {
       const filtered = allJobs.filter(
         (job) => job.category === selectedCategory
@@ -62,8 +67,6 @@ const Jobs = () => {
     setIsExpanded(false);
   };
 
-  console.log(allJobs);
-
   return (
     <HugeWrapper>
       <Filter
@@ -72,36 +75,44 @@ const Jobs = () => {
       />
       <Wrapper>
         <JobListing>
-          {filteredJobs.map((job) => (
-            <JobItem key={job.id}>
-              <JobHeader>
-                <ClockIcon>
-                  <FontAwesomeIcon icon={faClock} />
-                </ClockIcon>
-                <FullTimeText>Full Time</FullTimeText>
-              </JobHeader>
-              <div>
-                <JobTitle>{job.title}</JobTitle>
-                <CompanyTitle>
-                  <FontAwesomeIcon icon={faBuilding} /> {job.company.name}
-                </CompanyTitle>
-              </div>
-              <JobInfo>
-                <JobCategory>{job.category}</JobCategory>
-                <JobSalary>
-                  <FontAwesomeIcon icon={faDollarSign} /> {job.salary}
-                </JobSalary>
-                <JobLocation>
-                  <FontAwesomeIcon icon={faMapMarkerAlt} /> {job.location}
-                </JobLocation>
-              </JobInfo>
-              <GoToJobButton onClick={() => handleGoToJob(job.id)}>
-                {" "}
-                Go To Job
-                <FontAwesomeIcon icon={faExternalLinkAlt} />
-              </GoToJobButton>
-            </JobItem>
-          ))}
+          {isLoading ? (
+            <div>
+              <h3 style={{ color: "whitesmoke" }}>
+                Loading Job Listings 🔃 You may have to wait a bit
+              </h3>
+              <Spinner />
+            </div>
+          ) : (
+            filteredJobs.map((job) => (
+              <JobItem key={job.id}>
+                <JobHeader>
+                  <ClockIcon>
+                    <FontAwesomeIcon icon={faClock} />
+                  </ClockIcon>
+                  <FullTimeText>Full Time</FullTimeText>
+                </JobHeader>
+                <div>
+                  <JobTitle>{job.title}</JobTitle>
+                  <CompanyTitle>
+                    <FontAwesomeIcon icon={faBuilding} /> {job.company.name}
+                  </CompanyTitle>
+                </div>
+                <JobInfo>
+                  <JobCategory>{job.category}</JobCategory>
+                  <JobSalary>
+                    <FontAwesomeIcon icon={faDollarSign} /> {job.salary}
+                  </JobSalary>
+                  <JobLocation>
+                    <FontAwesomeIcon icon={faMapMarkerAlt} /> {job.location}
+                  </JobLocation>
+                </JobInfo>
+                <GoToJobButton onClick={() => handleGoToJob(job.id)}>
+                  Go To Job
+                  <FontAwesomeIcon icon={faExternalLinkAlt} />
+                </GoToJobButton>
+              </JobItem>
+            ))
+          )}
         </JobListing>
         <SelectedJob isExpanded={isExpanded}>
           {isExpanded ? (
@@ -124,7 +135,24 @@ const Jobs = () => {
 };
 
 export default Jobs;
+const Spinner = styled.div`
+  border: 2px solid #fff;
+  border-top: 2px solid #007bff;
+  border-radius: 50%;
+  margin: 0 auto;
+  width: 25px;
+  height: 25px;
+  animation: spin 1s linear infinite;
 
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
 const HugeWrapper = styled.div``;
 const Img = styled.img`
   width: 90%;
