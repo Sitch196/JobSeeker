@@ -51,7 +51,6 @@ const ReviewWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  /* border: 1px solid lightgray; */
   margin: 1rem 0;
   padding: 0.5rem;
   background-color: #4c35de;

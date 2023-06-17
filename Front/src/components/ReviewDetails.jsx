@@ -44,11 +44,11 @@ const Title = styled.div`
   gap: 1rem;
 `;
 const Img = styled.img`
-  width: 5rem;
-  height: 5rem;
+  width: 60px;
+  height: 4.5rem;
   border-radius: 50%;
   @media (width<900px) {
-    width: 4rem;
-    height: 4rem;
+    width: 60px;
+    height: 4.3rem;
   }
 `;

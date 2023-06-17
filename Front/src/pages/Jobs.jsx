@@ -94,7 +94,8 @@ const Jobs = () => {
                 <div>
                   <JobTitle>{job.title}</JobTitle>
                   <CompanyTitle>
-                    <FontAwesomeIcon icon={faBuilding} /> {job.company.name}
+                    <FontAwesomeIcon icon={faBuilding} />{" "}
+                    {job.company ? job.company.name : "Unknown"}
                   </CompanyTitle>
                 </div>
                 <JobInfo>
@@ -173,7 +174,6 @@ const Wrapper = styled.div`
 
 const SelectedJob = styled.div`
   width: 60%;
-  /* z-index: -1; */
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
@@ -184,6 +184,8 @@ const SelectedJob = styled.div`
   @media (max-width: 800px) {
     width: 100%;
     height: ${(props) => (props.isExpanded ? "100vh" : "auto")};
+    position: absolute;
+    /* height: 40rem; */
   }
 `;
 const PlaceholderText = styled.p`

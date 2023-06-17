@@ -84,6 +84,16 @@ const CreateJob = () => {
     setIsLoading(false);
   };
 
+  const categoryOptions = [
+    "Finance",
+    "Software Engineering",
+    "Banking",
+    "HR",
+    "Design",
+    "Sales",
+    "Administrative",
+  ];
+
   return (
     <CreateJobContainer>
       <CreateJobForm onSubmit={handleSubmit}>
@@ -95,13 +105,14 @@ const CreateJob = () => {
           value={title}
           onChange={handleChange}
         />
-        <Input
-          type="text"
-          name="category"
-          placeholder="Category"
-          value={category}
-          onChange={handleChange}
-        />
+        <Select name="category" value={category} onChange={handleChange}>
+          <option value="">Select a category</option>
+          {categoryOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </Select>
         <Input
           type="number"
           name="salary"
@@ -185,6 +196,19 @@ const Textarea = styled.textarea`
   border-radius: 4px;
   font-size: 1rem;
   resize: none;
+  &:focus {
+    border-color: rgba(76, 53, 222, 0.5);
+    outline-color: rgba(76, 53, 222, 0.5);
+  }
+`;
+
+const Select = styled.select`
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
   &:focus {
     border-color: rgba(76, 53, 222, 0.5);
     outline-color: rgba(76, 53, 222, 0.5);
