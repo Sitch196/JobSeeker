@@ -156,7 +156,8 @@ const Spinner = styled.div`
 `;
 const HugeWrapper = styled.div``;
 const Img = styled.img`
-  width: 90%;
+  width: 80%;
+  height: 30rem;
   border-radius: 50%;
 `;
 const Wrapper = styled.div`
