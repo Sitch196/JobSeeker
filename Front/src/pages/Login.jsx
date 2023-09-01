@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import interview from "../../../assets/interview-removebg-preview.png";
 import shortLogo from "../../../assets/short-logo.png";
 import { useContext } from "react";
 import { AuthContext } from "../../Context/authContext";
-
+import jwt_decode from "jwt-decode";
 const Login = () => {
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const [email, setEmail] = useState("");
@@ -13,6 +13,23 @@ const Login = () => {
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const handleCallbackResponse = (response) => {
+    console.log(response.credential);
+    const userObject = jwt_decode(response.credential);
+    console.log(userObject);
+  };
+  useEffect(() => {
+    // global google
+    google.accounts.id.initialize({
+      client_id:
+        "847442453537-3i2etlqmctnqi1a2pcuh0pkpnnuh4ldo.apps.googleusercontent.com",
+      callback: handleCallbackResponse,
+    });
+    google.accounts.id.renderButton(document.getElementById("signInDiv"), {
+      theme: "outline",
+      size: "large",
+    });
+  }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -102,6 +119,9 @@ const Login = () => {
           <p>
             Don't have an account? Sign up <Link to="/signup">here</Link>.
           </p>
+          <h4>Or</h4>
+          <Line></Line>
+          <div id="signInDiv"></div>
         </SignupForm>
       </SignupRight>
     </SignupContainer>
@@ -109,6 +129,12 @@ const Login = () => {
 };
 
 export default Login;
+const Line = styled.div`
+  height: 1px;
+  width: 100%;
+  border: 1px solid lightgrey;
+  margin: 0.4rem 0;
+`;
 const Errormsg = styled.p`
   width: 100%;
   text-align: center;
@@ -192,7 +218,7 @@ const SignupForm = styled.form`
   padding: 3rem;
   box-shadow: 0 2px 3px 0 lightgray;
   width: 90%;
-  height: 20rem;
+  /* height: 20rem; */
   padding: 3.5rem;
   @media (width<1250px) {
     width: 70%;
@@ -206,6 +232,7 @@ const SignupForm = styled.form`
   }
   @media (width<400px) {
     padding: 2.8rem 1rem;
+    height: 22rem;
   }
 `;
 const Containerwrapper = styled.div`
