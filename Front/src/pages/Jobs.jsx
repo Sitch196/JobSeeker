@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import jobGif from "../../../assets/jobGif.gif";
 import {
   faBuilding,
   faDollarSign,
@@ -78,7 +77,7 @@ const Jobs = () => {
           {isLoading ? (
             <div>
               <h3 style={{ color: "whitesmoke" }}>
-                Loading Job Listings 🔃 You may have to wait a bit
+                Loading Job Listings You may have to wait a bit
               </h3>
               <Spinner />
             </div>
@@ -125,7 +124,7 @@ const Jobs = () => {
             </>
           ) : (
             <PlaceholderText>
-              <Img src={jobGif} alt="" />
+              <h1 style={{ color: "whitesmoke" }}> No jobs selected</h1>
             </PlaceholderText>
           )}
         </SelectedJob>

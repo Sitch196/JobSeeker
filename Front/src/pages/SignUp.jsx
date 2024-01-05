@@ -7,8 +7,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../Context/authContext";
 
 const Signup = () => {
-  const { image, setImage } = useContext(AuthContext);
-
+  const [image, setImage] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -43,7 +42,6 @@ const Signup = () => {
       setDescription(value);
     } else if (name === "image") {
       const uploadedImage = files[0];
-      setImage(uploadedImage);
       setImage(uploadedImage);
     }
   };
